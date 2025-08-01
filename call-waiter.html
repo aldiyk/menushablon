@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Вызов официанта</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #232526, #414345);
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 1.6em;
+      margin-bottom: 10px;
+    }
+
+    #table-number {
+      font-size: 1.1em;
+      margin-bottom: 10px;
+      font-weight: bold;
+      color: #ffcc99;
+    }
+
+    p {
+      opacity: 0.8;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 1em;
+      color: white;
+      background: linear-gradient(to right, #ff7e5f, #feb47b);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    .back {
+      margin-top: 20px;
+      display: block;
+      color: white;
+      opacity: 0.7;
+      text-decoration: none;
+      font-size: 0.9em;
+      transition: 0.3s;
+    }
+
+    .back:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Позвать официанта?</h1>
+    <div id="table-number"></div>
+    <p>Нажмите на кнопку, чтобы отправить вызов.</p>
+    <button onclick="callWaiter()">Вызвать</button>
+    <a href="menu.html" class="back">← Назад в меню</a>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const table = urlParams.get('table') || '1 столик';
+
+    // Вывод на экран номера столика
+    const tableDiv = document.getElementById('table-number');
+    tableDiv.textContent = `Столик №${table}`;
+
+    function callWaiter() {
+      const token = '8307633777:AAHdFq3R47ytXUHLx6czlaco_cXz4sleihw';
+      const chatId = '2049110628';
+      const message = `🚨 Вызов официанта!\n🪑 Столик: ${table}\n⏰ Время: ${new Date().toLocaleTimeString()}`;
+
+      fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`)
+        .then(res => {
+          alert('Официант вызван!');
+        })
+        .catch(err => {
+          alert('Ошибка отправки. Попробуйте позже.');
+          console.error(err);
+        });
+    }
+  </script>
+</body>
+</html>
